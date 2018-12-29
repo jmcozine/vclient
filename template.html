@@ -17,7 +17,7 @@
               if(data.state == WMKS.CONST.ConnectionState.CONNECTED){
                   console.log("connection state change : connected");}
           });
-      wmks.connect("wss://esxi.yuxian.network:443/ticket/{{.Token}}");
+      wmks.connect("wss://{{.Host}}:443/ticket/{{.Token}}");
     </script>
     {{else if .Auth}}
     <p>Account: {{.User}}</p>

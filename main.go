@@ -23,6 +23,7 @@ type foo struct {
 	VMs    []mo.VirtualMachine
 	Auth   bool
 	Token  string
+	Host   string
 }
 
 func main() {
@@ -101,6 +102,7 @@ func main() {
 				log.Fatal("AcquireTicket: ", err)
 			}
 			account.Token = ticket.Ticket
+			account.Host = ticket.Host
 
 			tmpl.Execute(w, account)
 		} else if account.Client == nil || !account.Client.IsVC() {
