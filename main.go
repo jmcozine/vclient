@@ -2,10 +2,13 @@ package main
 
 import (
 	"context"
+	"flag"
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
 	"net/url"
+	"os"
 
 	"github.com/vmware/govmomi"
 	"github.com/vmware/govmomi/find"
@@ -15,7 +18,18 @@ import (
 	"github.com/vmware/govmomi/vim25/soap"
 )
 
-var vcsa = "https://vcsa.yuxian.network" + vim25.Path
+func getEnvString(v string, def string) string {
+	r := os.Getenv(v)
+	if r == "" {
+		return def
+	}
+
+	return r
+}
+
+const envURL = "VCSA_URL"
+
+var urlFlag = flag.String("url", getEnvString(envURL, "https://vcsa.example.com"+vim25.Path), fmt.Sprintf("ESXi or vCenter address [%s]", envURL))
 
 type foo struct {
 	User   string
@@ -27,7 +41,9 @@ type foo struct {
 }
 
 func main() {
-	u, err := soap.ParseURL(vcsa)
+	flag.Parse()
+
+	u, err := soap.ParseURL(*urlFlag)
 	if err != nil {
 		log.Fatal("ParseURL: ", err)
 	}
