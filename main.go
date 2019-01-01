@@ -48,7 +48,7 @@ func main() {
 		log.Fatal("ParseURL: ", err)
 	}
 
-	tmpl := template.Must(template.ParseFiles("template.html"))
+	tmpl := template.Must(template.New("tmpl").Parse(tmpl))
 	ctx := context.Background()
 	account := foo{}
 
@@ -85,8 +85,6 @@ func main() {
 				if err != nil {
 					log.Fatal("Retrieve: ", err)
 				}
-				log.Println("Got list of vms")
-				log.Println(vms[0].Summary.Config.Name)
 				account.VMs = vms
 
 				tmpl.Execute(w, account)
